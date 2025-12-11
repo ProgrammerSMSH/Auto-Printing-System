@@ -838,7 +838,7 @@ If issues persist after trying these solutions:
    - Error messages from logs
 
 4. **Contact Support:**
-   - Email: support@yourprinting.com
+   - Email: developer@shakib.me
    - Include: error messages, logs, system info
    - Describe: steps to reproduce the issue
 
