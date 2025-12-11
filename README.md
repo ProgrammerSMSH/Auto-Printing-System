@@ -652,6 +652,8 @@ chmod +x print_job.py
 
 ## 📡 API Endpoints
 
+Read The API Docs [API DOCS](https://github.com/ProgrammerSMSH/Auto-Printing-System/docs/API.md)
+
 ### Base URL
 ```
 https://your-domain.com/api
