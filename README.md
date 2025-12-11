@@ -148,48 +148,166 @@ The system uses a three-tier status management approach to track print jobs from
 ```
 auto-printing-system/
 │
-├── ci4-backend/                    # CodeIgniter 4 Backend (VPS)
+├── ci4-backend/                    # CodeIgniter 4 Backend (VPS Server)
 │   ├── app/
 │   │   ├── Config/
+│   │   │   ├── Api.php
+│   │   │   ├── App.php
+│   │   │   ├── Cache.php
+│   │   │   ├── Constants.php
+│   │   │   ├── ContentSecurityPolicy.php
+│   │   │   ├── Cookie.php
+│   │   │   ├── Database.php
+│   │   │   ├── Encryption.php
+│   │   │   ├── Events.php
+│   │   │   ├── Exceptions.php
+│   │   │   ├── Feature.php
+│   │   │   ├── Filters.php
+│   │   │   ├── Format.php
+│   │   │   ├── Generators.php
+│   │   │   ├── Honeypot.php
+│   │   │   ├── Images.php
+│   │   │   ├── Kint.php
+│   │   │   ├── Logger.php
+│   │   │   ├── Migrations.php
+│   │   │   ├── Modules.php
+│   │   │   ├── Pager.php
+│   │   │   ├── Paths.php
 │   │   │   ├── Routes.php
-│   │   │   └── Database.php
+│   │   │   ├── Security.php
+│   │   │   ├── Services.php
+│   │   │   ├── Session.php
+│   │   │   ├── Toolbar.php
+│   │   │   ├── Upload.php
+│   │   │   ├── UserAgents.php
+│   │   │   ├── Validation.php
+│   │   │   └── View.php
+│   │   │
 │   │   ├── Controllers/
-│   │   │   └── PrintController.php
+│   │   │   ├── PrintController.php
+│   │   │   ├── PrinterController.php
+│   │   │   ├── HistoryController.php
+│   │   │   ├── StatusController.php
+│   │   │   └── CleanupController.php
+│   │   │
+│   │   ├── Database/
+│   │   │   ├── Migrations/
+│   │   │   │   └── 2025-01-01-000001_CreatePrintJobsTable.php
+│   │   │   ├── Seeds/
+│   │   │   │   └── PrintJobSeeder.php
+│   │   │   └── Factories/
+│   │   │
+│   │   ├── Filters/
+│   │   │   ├── ApiAuthFilter.php
+│   │   │   ├── RateLimitFilter.php
+│   │   │   └── IPWhitelistFilter.php
+│   │   │
+│   │   ├── Helpers/
+│   │   │   └── file_helper.php
+│   │   │
+│   │   ├── Language/
+│   │   │   └── en/
+│   │   │
+│   │   ├── Libraries/
+│   │   │
 │   │   ├── Models/
-│   │   │   └── PrintJobModel.php
+│   │   │   ├── PrintJobModel.php
+│   │   │   └── PrinterModel.php
+│   │   │
+│   │   ├── ThirdParty/
+│   │   │
 │   │   ├── Views/
+│   │   │   ├── errors/
+│   │   │   │   ├── cli/
+│   │   │   │   ├── html/
+│   │   │   │   └── debug/
 │   │   │   ├── upload.php
 │   │   │   └── history.php
-│   │   └── Database/
-│   │       └── Migrations/
-│   │           └── 2025-01-01-000001_CreatePrintJobsTable.php
+│   │   │
+│   │   └── Helpers/
+│   │       └── file_helper.php
+│   │
 │   ├── public/
+│   │   ├── .htaccess
 │   │   ├── index.php
-│   │   ├── uploads/               # PDF storage directory
-│   │   └── assets/
-│   │       ├── css/
-│   │       └── js/
+│   │   ├── uploads/
+│   │   │   ├── .htaccess
+│   │   │   ├── 2025/
+│   │   │   │   ├── 01/
+│   │   │   │   │   └── 12/
+│   │   │   │   │       └── (PDF files will be stored here)
+│   │   │   │   └── (year folders)
+│   │   │   └── (organized by date)
+│   │   │
+│   │   ├── assets/
+│   │   │   ├── css/
+│   │   │   │   └── style.css
+│   │   │   ├── js/
+│   │   │   │   └── app.js
+│   │   │   └── images/
+│   │   │
+│   │   └── .htaccess
+│   │
+│   ├── system/
+│   │   └── (CodeIgniter 4 system files - from framework)
+│   │
+│   ├── tests/
+│   │   ├── _support/
+│   │   └── unit/
+│   │
+│   ├── vendor/
+│   │   └── (Composer dependencies - will be created by composer)
+│   │
 │   ├── writable/
-│   │   └── logs/
-│   └── .env
+│   │   ├── cache/
+│   │   ├── logs/
+│   │   │   └── log-YYYY-MM-DD.php
+│   │   ├── session/
+│   │   ├── temp/
+│   │   └── uploads/
+│   │       └── (symlink or copy of public/uploads/)
+│   │
+│   ├── .env
+│   ├── .env.example
+│   ├── composer.json
+│   ├── spark
+│   └── .htaccess
 │
 ├── home-server/                    # Home Server Scripts
-│   ├── cron.php                   # Main cron job script
-│   ├── print_job.py               # Python printing script
-│   ├── config.php                 # Configuration file
-│   ├── logs/                      # Log directory
+│   ├── cron.php
+│   ├── print_job.py
+│   ├── config.php
+│   ├── health_check.sh
+│   ├── install.sh
+│   ├── cleanup.php
+│   │
+│   ├── logs/
 │   │   ├── cron.log
-│   │   └── print.log
-│   └── temp/                      # Temporary file storage
+│   │   ├── print.log
+│   │   ├── health.log
+│   │   └── cleanup.log
+│   │
+│   ├── temp/
+│   │   └── (temporary PDF files will be stored here)
+│   │
+│   └── .env.example
 │
 ├── docs/                          # Documentation
 │   ├── API.md
 │   ├── SETUP.md
-│   └── TROUBLESHOOTING.md
+│   ├── TROUBLESHOOTING.md
+│   └── DEPLOYMENT.md
+│
+├── scripts/                       # Utility scripts
+│   ├── backup_database.sh
+│   ├── restore_database.sh
+│   ├── rotate_logs.sh
+│   └── update_system.sh
 │
 ├── README.md
 ├── LICENSE
-└── .gitignore
+├── .gitignore
+└── .gitattributes
 ```
 
 ---
