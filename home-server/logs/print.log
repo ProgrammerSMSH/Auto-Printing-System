@@ -1,0 +1,12 @@
+[2025-01-12 14:30:04] [INFO] Starting print script with arguments:
+[2025-01-12 14:30:04] [INFO]   File: /home/printserver/remote-printing/temp/PJ-20250112-ABC123_document.pdf
+[2025-01-12 14:30:04] [INFO]   Printer: HP_LaserJet
+[2025-01-12 14:30:04] [INFO]   Options: {'paper_size': 'A4', 'color_mode': 'grayscale', 'page_range': 'all', 'copies': 1}
+[2025-01-12 14:30:04] [INFO] CUPS is running. Found 1 printer(s)
+[2025-01-12 14:30:04] [INFO]   - HP_LaserJet: state=3
+[2025-01-12 14:30:04] [INFO] Starting print job: /home/printserver/remote-printing/temp/PJ-20250112-ABC123_document.pdf on HP_LaserJet
+[2025-01-12 14:30:04] [INFO] Printer 'HP_LaserJet' found. State: 3, Reasons: ['none']
+[2025-01-12 14:30:04] [INFO] Print options prepared: {'media': 'A4', 'ColorModel': 'Gray', 'copies': '1', 'print-quality': '3'}
+[2025-01-12 14:30:04] [INFO] Submitting print job to HP_LaserJet...
+[2025-01-12 14:30:05] [INFO] Print job submitted successfully. Job ID: 42
+[2025-01-12 14:30:05] [INFO] Print job completed successfully
