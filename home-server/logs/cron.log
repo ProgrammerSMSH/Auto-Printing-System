@@ -1,0 +1,25 @@
+[2025-01-12 14:30:01] [INFO] Cron job started
+[2025-01-12 14:30:01] [INFO] Created temp directory: /home/printserver/remote-printing/temp/
+[2025-01-12 14:30:01] [INFO] Cleaning up old temporary files
+[2025-01-12 14:30:01] [INFO] Cleared 2 old temporary files
+[2025-01-12 14:30:01] [INFO] Fetching pending jobs from API...
+[2025-01-12 14:30:02] [INFO] Found 1 pending job(s)
+[2025-01-12 14:30:02] [INFO] Processing job: PJ-20250112-ABC123 - document.pdf
+[2025-01-12 14:30:02] [INFO] Downloading file for job: PJ-20250112-ABC123
+[2025-01-12 14:30:03] [INFO] File downloaded to: /home/printserver/remote-printing/temp/PJ-20250112-ABC123_document.pdf
+[2025-01-12 14:30:03] [INFO] Executing print command: /usr/bin/python3 '/home/printserver/remote-printing/print_job.py' '/home/printserver/remote-printing/temp/PJ-20250112-ABC123_document.pdf' 'HP_LaserJet' '{"paper_size":"A4","color_mode":"grayscale","page_range":"all","copies":1}'
+[2025-01-12 14:30:05] [INFO] Print script output: [2025-01-12 14:30:04] [INFO] Starting print script with arguments:
+[2025-01-12 14:30:05] [INFO]   File: /home/printserver/remote-printing/temp/PJ-20250112-ABC123_document.pdf
+[2025-01-12 14:30:05] [INFO]   Printer: HP_LaserJet
+[2025-01-12 14:30:05] [INFO]   Options: {'paper_size': 'A4', 'color_mode': 'grayscale', 'page_range': 'all', 'copies': 1}
+[2025-01-12 14:30:05] [INFO] [2025-01-12 14:30:04] [INFO] CUPS is running. Found 1 printer(s)
+[2025-01-12 14:30:05] [INFO] [2025-01-12 14:30:04] [INFO]   - HP_LaserJet: state=3
+[2025-01-12 14:30:05] [INFO] [2025-01-12 14:30:04] [INFO] Starting print job: /home/printserver/remote-printing/temp/PJ-20250112-ABC123_document.pdf on HP_LaserJet
+[2025-01-12 14:30:05] [INFO] [2025-01-12 14:30:04] [INFO] Printer 'HP_LaserJet' found. State: 3, Reasons: ['none']
+[2025-01-12 14:30:05] [INFO] [2025-01-12 14:30:04] [INFO] Print options prepared: {'media': 'A4', 'ColorModel': 'Gray', 'copies': '1', 'print-quality': '3'}
+[2025-01-12 14:30:05] [INFO] [2025-01-12 14:30:04] [INFO] Submitting print job to HP_LaserJet...
+[2025-01-12 14:30:05] [INFO] [2025-01-12 14:30:05] [INFO] Print job submitted successfully. Job ID: 42
+[2025-01-12 14:30:05] [INFO] [2025-01-12 14:30:05] [INFO] Print job completed successfully
+[2025-01-12 14:30:05] [INFO] Print job completed successfully: PJ-20250112-ABC123
+[2025-01-12 14:30:06] [INFO] Temporary file deleted: /home/printserver/remote-printing/temp/PJ-20250112-ABC123_document.pdf
+[2025-01-12 14:30:06] [INFO] Cron job completed. Processed: 1, Failed: 0
