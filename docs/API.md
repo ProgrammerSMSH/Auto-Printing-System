@@ -527,7 +527,7 @@ If webhooks are configured, the system will send POST requests to your webhook U
 
 ## Support
 
-For API support, contact: api-support@yourprinting.com
+For API support, contact: developer@shakib.me
 
 **Last Updated:** December 2025  
 **API Version:** 1.0
