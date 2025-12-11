@@ -299,6 +299,11 @@ class PrintController extends ResourceController
         
         return $this->respond($response);
     }
+    // Add this method to the PrintController class
+    public function uploadForm()
+    {
+        return view('upload');
+    }
 
     public function delete($job_id = null)
     {
