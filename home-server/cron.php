@@ -181,4 +181,158 @@ function processJob($job)
     try {
         // Update status to processing
         if (!updateJobStatus($jobId, 2)) {
-            throw new Exception("
+            throw new Exception("Failed to update job status to processing");
+        }
+        
+        // Download file
+        logMessage("Downloading file for job: {$jobId}");
+        $tempFile = downloadFile($jobId, $filename);
+        logMessage("File downloaded to: {$tempFile}");
+        
+        // Prepare print options
+        $printOptions = [
+            'paper_size' => $job['paper_size'],
+            'color_mode' => $job['color_mode'],
+            'page_range' => $job['page_range'],
+            'copies' => (int)$job['copies']
+        ];
+        
+        $printerName = $job['printer_name'] ?? DEFAULT_PRINTER;
+        
+        // Execute Python print script
+        $command = sprintf(
+            '%s %s %s %s %s 2>&1',
+            escapeshellarg(PYTHON_BIN),
+            escapeshellarg(PYTHON_SCRIPT),
+            escapeshellarg($tempFile),
+            escapeshellarg($printerName),
+            escapeshellarg(json_encode($printOptions))
+        );
+        
+        logMessage("Executing print command: {$command}");
+        
+        exec($command, $output, $returnCode);
+        
+        $outputStr = implode("\n", $output);
+        logMessage("Print script output: {$outputStr}");
+        
+        if ($returnCode === 0) {
+            // Success
+            logMessage("Print job completed successfully: {$jobId}");
+            updateJobStatus($jobId, 3);
+            
+            // Clean up temporary file
+            if (DELETE_AFTER_PRINT && file_exists($tempFile)) {
+                unlink($tempFile);
+                logMessage("Temporary file deleted: {$tempFile}");
+            }
+            
+            return true;
+        } else {
+            // Failure
+            $errorMsg = "Print script failed with code: {$returnCode}. Output: {$outputStr}";
+            logMessage($errorMsg, 'ERROR');
+            updateJobStatus($jobId, 1, $errorMsg);
+            
+            // Don't delete file on failure for debugging
+            return false;
+        }
+        
+    } catch (Exception $e) {
+        $errorMsg = "Job processing failed: " . $e->getMessage();
+        logMessage($errorMsg, 'ERROR');
+        updateJobStatus($jobId, 1, $errorMsg);
+        return false;
+    }
+}
+
+/**
+ * Main execution
+ */
+function main()
+{
+    logMessage("Cron job started");
+    
+    // Check if temp directory exists
+    if (!is_dir(TEMP_DIR)) {
+        mkdir(TEMP_DIR, 0755, true);
+        logMessage("Created temp directory: " . TEMP_DIR);
+    }
+    
+    // Clean up old temp files (older than 24 hours)
+    cleanTempFiles();
+    
+    try {
+        // Fetch pending jobs from API
+        logMessage("Fetching pending jobs from API...");
+        $response = makeApiRequest('/print/pending');
+        
+        if ($response['code'] !== 200) {
+            throw new Exception("API returned HTTP code: {$response['code']}");
+        }
+        
+        if (!isset($response['body']['status']) || $response['body']['status'] !== 'success') {
+            throw new Exception("API response error: " . json_encode($response['body']));
+        }
+        
+        $jobs = $response['body']['data'] ?? [];
+        $jobCount = count($jobs);
+        
+        logMessage("Found {$jobCount} pending job(s)");
+        
+        if ($jobCount === 0) {
+            logMessage("No pending jobs to process");
+            return;
+        }
+        
+        // Process each job
+        $processed = 0;
+        $failed = 0;
+        
+        foreach ($jobs as $job) {
+            if (processJob($job)) {
+                $processed++;
+            } else {
+                $failed++;
+            }
+            
+            // Small delay between jobs to prevent overwhelming the printer
+            if (defined('PROCESS_DELAY') && PROCESS_DELAY > 0) {
+                sleep(PROCESS_DELAY);
+            }
+        }
+        
+        logMessage("Cron job completed. Processed: {$processed}, Failed: {$failed}");
+        
+    } catch (Exception $e) {
+        logMessage("Cron job failed: " . $e->getMessage(), 'ERROR');
+        exit(1);
+    }
+}
+
+/**
+ * Clean up old temporary files
+ */
+function cleanTempFiles()
+{
+    $files = glob(TEMP_DIR . '*');
+    $now = time();
+    $cleaned = 0;
+    
+    foreach ($files as $file) {
+        if (is_file($file)) {
+            $fileAge = $now - filemtime($file);
+            if ($fileAge > 24 * 3600) { // 24 hours
+                unlink($file);
+                $cleaned++;
+            }
+        }
+    }
+    
+    if ($cleaned > 0) {
+        logMessage("Cleaned up {$cleaned} old temporary files");
+    }
+}
+
+// Run main function
+main();
